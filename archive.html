@@ -19,9 +19,9 @@ icon: archive
       {% endif %}
     {% endunless %}
       {% if post.external-url %}
-          <li><time>{{ post.date | date:"%F" }}</time> <a href="{{ post.external-url | xml_escape }}" title="{{ post.title | xml_escape }}">{{ post.title | truncate: 40, "..." | xml_escape }}</a></li>
+          <li><time>{{ post.date | date:"%F" }}</time> <a href="{{ post.external-url | xml_escape }}" title="{{ post.title | xml_escape }}">{{ post.title | truncate: 60, "..." | xml_escape }}</a></li>
       {% else %}
-          <li><time>{{ post.date | date:"%F" }}</time> <a href="{{ post.url | xml_escape }}" title="{{ post.title | xml_escape }}">{{ post.title | truncate: 40, "..." | xml_escape }}</a></li>
+          <li><time>{{ post.date | date:"%F" }}</time> <a href="{{ post.url | xml_escape }}" title="{{ post.title | xml_escape }}">{{ post.title | truncate: 60, "..." | xml_escape }}</a></li>
       {% endif %}
   {% endfor %}
   </ul>
