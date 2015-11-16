@@ -24,7 +24,9 @@ List of my interests:
   * [See more](https://github.com/ZixuanGong/MultimediaAppProj_HighSchool)
 * Deception study: [live video chat](http://flimflam.me:8443/)
   * With team of three, built a single-page website that supports advanced live video chatting through WebRTC server  * Server side implemented with Sprint Boot architecture that interacts with front-end through WebSockect and JSON  * Used Bootstrap for UI design and Git as version control system
-
+* Music Sharing Website & Database Design  * In team of three, created a website that supports CRUD operations to interact with MySQL database  * Project development based on Entity-Relationship Model, Apache Server/MySQL/PHP structure and Semantic UI
+  * [See more](https://drive.google.com/file/d/0B8_e1QcwnuWcRHVPekpDN2pITzA/view?usp=sharing)
+  
 ###Parallel Data Process
 * Implemented parallel solutions for Gaussian Elimination with Pthreads, MPI and OpenMP([source code](https://github.com/shaowei-su/ParallelGaussianElimination))* Developed Nvidia CUDA programs to solve MergeSort and Blowfish Emcryption in massive parallel* Accelerated Python computation speed hundreds times faster by NumbaPro/LLVM compiler and multicore GPUs([see more](https://github.com/shaowei-su/Python-Computing-Acceleration))* Gained practical experience on MapReduce programming to solve Matrix Multiplication and Jacobi Iterative Method
 
