@@ -5,7 +5,8 @@ title: About
 
 <p class="message">
   Hey there! My name is Shaowei and I'm a second year graduate student at University of Rochester. Now I'm in the job market looking for full-time/intern position to work as a software engineer. <br><br>
-  My concentrations is Computer Engineering and I have experience in Java, C, Python, Swift as well as web programming. Since this April, I joined Clinical Education Initiative(CEI) team at URMC, which is a dynamic research group focusing on providing online resources for HIV/HCV/STD healthcare providers. My responsibilities include development of database-driven web resources, multimedia products, and iOS/Android mobile apps under the supervision of senior program staff.
+  My concentrations is Computer Engineering and I have experience in Java, C, Python, Swift as well as web programming. Since this April, I joined Clinical Education Initiative(CEI) team at URMC, which is a dynamic research group focusing on providing online resources for HIV/HCV/STD healthcare providers. My responsibilities include development of database-driven web resources, multimedia products, and iOS/Android mobile apps under the supervision of senior program staff. <br><br>
+  See more: [Resume](http://shaowei-su.github.io/resume.pdf)
 </p>
 List of my interests:
 
