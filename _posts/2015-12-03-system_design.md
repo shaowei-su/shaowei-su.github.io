@@ -81,8 +81,8 @@ Original from [posts](https://github.com/cyandterry/Python-Study)
 
 ###[Harvard Class](https://www.youtube.com/watch?v=-W9F__D3oY4)
 1. 形式: Multi-tier architecture
-![Multi-tier architecture](./img/arch-anganguera.png)
-![Another Pic](./img/perfpatrol.png)
+![Multi-tier architecture](http://shaowei-su.github.io/img/arch-anganguera.png)
+![Another Pic](http://shaowei-su.github.io/img/perfpatrol.png)
 
 2. 重要的几个东西
    1. DNS - 可以通过DNS来进行geo based load balancing, ```nslookup google```
@@ -185,7 +185,7 @@ Original from [posts](https://github.com/cyandterry/Python-Study)
        同样是从新的server逆时针出发到上一个server之间object归他管了
 * 通过virtual node来提高balance
 * 正常hash就直接hash ip就行了 hash('192.168.1.1')， 如果是hash virtual node可以 hash('192.168.1.1#1')
-![consistent_hashing](/img/consistent_hashing.jpg)
+![consistent_hashing](http://shaowei-su.github.io/img/consistent_hashing.jpg)
 
 ###[Storm](https://storm.incubator.apache.org/documentation/Home.html)
 Storm is a distributed realtime computation system. Similar to how Hadoop provides a set of general primitives for doing batch processing, Storm provides a set of general primitives for doing realtime computation.
@@ -369,7 +369,7 @@ A Distributed Coordination Service for Distributed Applications
         * P -> X -> QQ -> CC : Publish/Subscribe
         * [RPC模型](http://www.rabbitmq.com/tutorials/tutorial-six-python.html)
 
-![Queue](./img/queues.png)
+![Queue](http://shaowei-su.github.io/img/queues.png)
 
 #####Fit to Pattern
 1. Constrains and Use Cases
