@@ -5,7 +5,6 @@ redcarpet:
   extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
 # Permalinks
 permalink:        pretty
-relative_permalinks: true
 
 # Setup
 title:            Alibi
@@ -25,3 +24,5 @@ version:          2.1.0
 
 github:
   repo:           https://github.com/shaowei-su
+
+gems:		  [jekyll-paginate]
