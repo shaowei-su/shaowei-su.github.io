@@ -34,7 +34,6 @@ class Solution {
         int maxLen = 0, left = 0, right = 0;
         String res = "";
         for (int i = 0; i < (2 * s.length() - 1); i++) {
-            System.out.println(" i = " + i);
             if (i % 2 == 0) {
                 left = (i - 2) / 2;
                 right = (i + 2) / 2;
@@ -46,17 +45,11 @@ class Solution {
                 left--;
                 right++;
             }
-            System.out.println("i = " + i + " left = " + left + " right = " + right);
             if (right - left - 1 > maxLen) {
                 maxLen = right - left - 1;
                 res = s.substring(left + 1, right);
             }
         }
         return res;
-    }
-
-    public static void main(String[] args) {
-        Solution s = new Solution();
-        s.longestPalindrome("babad");
     }
 }
