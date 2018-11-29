@@ -37,18 +37,24 @@
  * 
  */
 class WordFilter {
-    String[] wordsSort;
+    Map<String, Integer> prefixMap = new HashMap<>();
+
     public WordFilter(String[] words) {
-        wordsSort = words;
+        for (int w = 0; w < words.length; w++) {
+            for (int i = 0; i <= 10 && i <= words[w].length(); i++) {
+                for (int j = 0; j <= 10 && j <= words[w].length(); j++) {
+                    prefixMap.put(words[w].substring(0, i) + "#" + words[w].substring(words[w].length() - j), w);
+                }
+            }
+        }
     }
     
     public int f(String prefix, String suffix) {
-        for (int i = wordsSort.length - 1; i>= 0; i--) {
-            if (wordsSort[i].startsWith(prefix) && wordsSort[i].endsWith(suffix)) {
-                return i;
-            }
+        if (prefixMap.containsKey(prefix + "#" + suffix)) {
+            return prefixMap.get(prefix + "#" + suffix);
+        } else {
+            return -1;
         }
-        return -1;
     }
 }
 
