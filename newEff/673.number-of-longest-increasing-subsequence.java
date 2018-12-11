@@ -51,24 +51,35 @@ class Solution {
             dp[i] = 1;
             res[i] = 1;
         }
+
+        int globalMax = 1;
         for (int i = 1; i < len; i++) {
-            int curLong = 0;
-            int maxLong = 0;
-            int maxCount = 0;
+            int curLong = 1;
+            int maxLong = 1;
+            int maxCount = 1;
             for (int j = 0; j < i; j++) {
                 if (nums[i] > nums[j]) {
                     curLong = dp[j] + 1;
                 } else {
-                    curLong = dp[j];
+                    continue;
                 }
                 if (curLong == maxLong) {
-                    maxCount++;
+                    maxCount += res[j];
                 } else if (curLong > maxLong) {
-                    maxCount = 1;
+                    maxCount = res[j];
+                    maxLong = curLong;
                 }
             }
+            dp[i] = maxLong;
             res[i] = maxCount;
+            globalMax = Math.max(globalMax, maxLong);
         }
-        return res[len - 1];
+        int ret = 0;
+        for (int i = 0; i < len; i++) {
+            if (dp[i] == globalMax) {
+                ret += res[i];
+            }
+        }
+        return ret;
     }
 }
