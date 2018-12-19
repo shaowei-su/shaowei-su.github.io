@@ -94,6 +94,44 @@
  */
 class Solution {
     public void cleanRoom(Robot robot) {
-        
+        Set<String> visited = new HashSet<>();
+        dfs(robot, visited, 0, 0, 0);
+    }
+    public void dfs(Robot robot, Set<String> visited, int dir, int i, int j) {
+        String pos = i + "->" + j;
+        if (visited.contains(pos)) {
+            return;
+        }
+        visited.add(pos);
+        robot.clean();
+        for (int n = 0; n < 4; n++) {
+            if (robot.move()) {
+                switch (dir) {
+                    case 0:
+                        dfs(robot, visited, dir, i - 1, j);
+                        break;
+                    case 90:
+                        dfs(robot, visited, dir, i, j + 1);
+                        break;
+                    case 180:
+                        dfs(robot, visited, dir, i - 1, j);
+                        break;
+                    case 270:
+                        dfs(robot, visited, dir, i, j - 1);
+                        break;
+                    default:
+                        break;
+                }
+                robot.turnLeft();
+                robot.turnLeft();
+                robot.move();
+                robot.turnRight();
+                robot.turnRight();
+            }
+            robot.turnRight();
+            dir += 90;
+            dir %= 360;
+        }
     }
 }
+

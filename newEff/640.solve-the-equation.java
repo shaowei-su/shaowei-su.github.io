@@ -105,6 +105,9 @@ class Solution {
             if (Character.isDigit(chars[i])) {
                 cache = cache * 10 + (chars[i] - '0');
             } else if (chars[i] == 'x') {
+                if (i > 0 && chars[i - 1] == '0') {
+                    continue;
+                }
                 if (isPos) {
                     ns += cache == 0 ? 1 : cache;
                 } else {
