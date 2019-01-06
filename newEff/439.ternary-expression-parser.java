@@ -74,18 +74,35 @@
  */
 class Solution {
     public String parseTernary(String expression) {
+        Deque<Character> stack = new LinkedList<>();
+        for (int i = expression.length() - 1; i >= 0; i--) {
+            char cur = expression.charAt(i);
+            if (stack.size() > 0 && stack.peek() == '?') {
+                stack.pop(); //?
+                char left = stack.pop();
+                stack.pop(); // :
+                char right = stack.pop();
+                if (cur == 'T') {
+                    stack.push(left);
+                } else {
+                    stack.push(right);
+                }
+            } else {
+                stack.push(cur);
+            }
+        }
+        return String.valueOf(stack.peek());
+    }
+    public String parseTernary2(String expression) {
         if (!expression.contains("?")) {
             return expression;
         }
-        System.out.println("now processing  : " + expression);
         int lastQ = expression.lastIndexOf('?');
         int nextCol = expression.indexOf(':', lastQ);
         int neiCol = nextSymbol(expression, nextCol);
-        System.out.println("lastQ = {}, nextCol = {}, neiCol = {}" +  lastQ + " " + nextCol + " " +  neiCol);
         String left = expression.substring(lastQ + 1, nextCol);
         String right = neiCol > 0 ? expression.substring(nextCol + 1, neiCol) : expression.substring(nextCol + 1);
         String temp = eval(expression.charAt(lastQ - 1)) ? left : right;
-        System.out.println("temp = " + temp);
         String lefter = lastQ == 1 ? "" : expression.substring(0, lastQ - 1);
         String righter = neiCol > 0 ? expression.substring(neiCol) : "";
         return parseTernary(lefter + temp + righter);
@@ -93,7 +110,7 @@ class Solution {
 
     public int nextSymbol(String exp, int start) {
         for (int i = start + 1; i < exp.length(); i++) {
-            if (!Character.isDigit(exp.charAt(i))) {
+            if (exp.charAt(i) == '?' || exp.charAt(i) == ':') {
                 return i;
             }
         }
@@ -101,17 +118,6 @@ class Solution {
     }
 
     public boolean eval(char exp) {
-        if (exp == 'T') {
-            System.out.println("eval true !");
-            return true;
-        } else {
-            System.out.println("eval false !");
-            return false;
-        }
-    }
-
-    public static void main(String[] args) {
-        Solution sol = new Solution();
-        sol.parseTernary("T?2:3");
+        return exp == 'T';
     }
 }
