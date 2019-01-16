@@ -43,21 +43,38 @@
  * 
  */
 class Solution {
-    public static void main(String[] args) {
-        Solution sol = new Solution();
-        System.out.println(sol.longestSubstring("aaabb", 3));
-
-    }
     public int longestSubstring(String s, int k) {
+        return helper(s.toCharArray(), 0, s.length() - 1, k);
+    }
+    public int helper(char[] chars, int start, int end, int k) {
+        if (end - start + 1< k) {
+            return 0;
+        }
+
+        int[] counts = new int[26];
+        for (int i = start; i <= end; i++) {
+            counts[chars[i] - 'a']++;
+        }
+        for (int i = start; i <= end; i++) {
+            if (counts[chars[i] - 'a'] > 0 && counts[chars[i] - 'a'] < k) {
+                int left = helper(chars, start, i - 1, k);
+                int right = helper(chars, i + 1, end, k);
+                return Math.max(left, right);
+            }
+        }
+        return end - start + 1;
+    }   
+
+    public int longestSubstring2(String s, int k) {
         if (s == null || s.length() < k) {
             return 0;
         }
         int[] counts;
-        int max = Integer.MIN_VALUE;
-        for (int i = 0; i < s.length() - 1; i++) {
+        int max = 0;
+        for (int i = 0; i < s.length(); i++) {
             counts = new int[256];
             for (int j = i; j < s.length(); j++) {
-                counts[s.charAt(j)] += 1;
+                counts[s.charAt(j)]++;
                 if (isFit(counts, k)) {
                     max = Math.max(j - i + 1, max);
                 }
@@ -69,7 +86,6 @@ class Solution {
     public boolean isFit(int[] counts, int k) {
         for (int c : counts) {
             if (c > 0 && c < k) {
-                System.out.println("c = " + c + " then failed and k = " + k);
                 return false;
             }
         }
