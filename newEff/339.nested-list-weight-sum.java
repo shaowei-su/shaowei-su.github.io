@@ -65,6 +65,22 @@
  */
 class Solution {
     public int depthSum(List<NestedInteger> nestedList) {
-        
+        int sum = 0;
+        for (NestedInteger ni : nestedList) {
+            sum += dfs(ni, 1);
+        }
+        return sum;
     }
+    public int dfs(NestedInteger nestedList, int depth) {
+        if (nestedList.isInteger()) {
+            return depth * nestedList.getInteger();
+        } else {
+            int sum = 0;
+            for (NestedInteger ni : nestedList.getList()) {
+                sum += dfs(ni, depth + 1);
+            }
+            return sum;
+        }
+    }
+        
 }

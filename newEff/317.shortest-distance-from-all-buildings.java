@@ -54,25 +54,28 @@ class Solution {
         int r = grid.length;
         int c = grid[0].length;
         int[][] dist = new int[r][c];
+        int[][] count = new int[r][c];
+        int countOnes = 0;
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
                 if (grid[i][j] == 1) {
-                bfs(grid, dist, i, j, r, c);
+                countOnes++;
+                bfs(grid, dist, i, j, r, c, count);
                 }
             }
         }
         int min = Integer.MAX_VALUE;
         for (int i = 0; i < r; i++) {
             for (int j = 0; j < c; j++) {
-                    if (dist[i][j] > 0) {
+                    if (dist[i][j] > 0 && count[i][j] == countOnes) {
                         min = Math.min(min, dist[i][j]);
                     }
             }
         }
-        return min;
+        return min == Integer.MAX_VALUE ? -1 : min;
     }
     private final static int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-    public void bfs(int[][] grid, int[][] dist, int i, int j, int r, int c) {
+    public void bfs(int[][] grid, int[][] dist, int i, int j, int r, int c, int[][] count) {
         Deque<int[]> queue = new LinkedList<>();
         queue.offer(new int[] {i, j});
         Set<String> visited = new HashSet<>();
@@ -83,6 +86,7 @@ class Solution {
             while (size > 0) {
                 int[] cur = queue.poll();
                 dist[cur[0]][cur[1]] += curDist;
+                count[cur[0]][cur[1]]++;
                 for (int[] dir : dirs) {
                     int x = cur[0] + dir[0];
                     int y = cur[1] + dir[1];
