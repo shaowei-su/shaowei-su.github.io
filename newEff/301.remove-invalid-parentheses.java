@@ -1,5 +1,3 @@
-import java.util.*;
-
 /*
  * @lc app=leetcode id=301 lang=java
  *
@@ -44,12 +42,14 @@ class Solution {
     public List<String> removeInvalidParentheses(String s) {
         List<String> res = new ArrayList<>();
         Set<Integer> removed = new HashSet<>();
-        dfs(s, res, removed);
-        System.out.println("final : " + res);
+        dfs(s, res, removed, 0);
+        Set<String> dedup = new HashSet<>();
+        dedup.addAll(res);
+        res.clear();
+        res.addAll(dedup);
         return res;
     }
-    public void dfs(String s, List<String> res, Set<Integer> removed) {
-        System.out.println("dfs with res : " + res);
+    public void dfs(String s, List<String> res, Set<Integer> removed, int ind) {
         if (isValid(s, removed)) {
             if (res.size() == 0) {
                 res.add(delete(s, removed));
@@ -63,10 +63,10 @@ class Solution {
                 res.add(delete(s, removed));
             }
         } else {
-            if (res.size() > 0 && (s.length() - res.get(0).length()) <= removed.size()) {
+            if (res.size() > 0 && s.length() - res.get(0).length() <= removed.size()) {
                 return;
             }
-            for (int i = 0; i < s.length(); i++) {
+            for (int i = ind; i < s.length(); i++) {
                 if (removed.contains(i)) {
                     continue;
                 }
@@ -74,14 +74,13 @@ class Solution {
                     continue;
                 }
                 removed.add(i);
-                dfs(s, res, removed);
+                dfs(s, res, removed, i + 1);
                 removed.remove(i);
             }
         }
     }
 
     public boolean isValid(String s, Set<Integer> removed) {
-        System.out.println("validating removed : " + removed);
         int left = 0;
         for (int i = 0; i < s.length(); i++) {
             if (removed.contains(i)) {
@@ -97,8 +96,6 @@ class Solution {
                 }
             }
         }
-        boolean res = left == 0;
-        System.out.println("result = " + res);
         return left == 0;
     }
 
@@ -111,11 +108,6 @@ class Solution {
             sb.append(s.charAt(i));
         }
         return sb.toString();
-    }
-
-    public static void main(String[] args) {
-        Solution sol = new Solution();
-        sol.removeInvalidParentheses("()())()");
     }
 
 }
