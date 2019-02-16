@@ -57,7 +57,7 @@ class Vector2D {
     public Vector2D(int[][] v) {
        i = 0;
        j = 0;
-       v = v;
+       this.v = v;
     }
     
     public int next() {
@@ -72,10 +72,19 @@ class Vector2D {
     }
     
     public boolean hasNext() {
+        System.out.println(" i = " + i + " j = " + j);
         if (i < (v.length - 1) || ((i == v.length - 1) && (j < v[i].length))) {
             return true;
         }
         return false;
+    }
+
+    public static void main(String[] args){
+        int[][] v = new int[][] {{1,2},{3},{4}};
+        Vector2D iterator = new Vector2D(v);
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
     }
 }
 

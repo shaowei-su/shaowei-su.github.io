@@ -1,12 +1,14 @@
 /*
+ * @lc app=leetcode id=282 lang=java
+ *
  * [282] Expression Add Operators
  *
  * https://leetcode.com/problems/expression-add-operators/description/
  *
  * algorithms
- * Hard (31.00%)
- * Total Accepted:    52.9K
- * Total Submissions: 170.7K
+ * Hard (31.89%)
+ * Total Accepted:    61.9K
+ * Total Submissions: 193K
  * Testcase Example:  '"123"\n6'
  *
  * Given a string that contains only digits 0-9 and a target value, return all
@@ -45,10 +47,38 @@
  * Input: num = "3456237490", target = 9191
  * Output: []
  * 
- * 
  */
 class Solution {
     public List<String> addOperators(String num, int target) {
-        
+        List<String> res = new ArrayList<>();
+        if (num == null || num.length() == 0) {
+            return res;
+        }
+        if (Long.parseLong(num) > Long.valueOf(Integer.MAX_VALUE)) {
+            return res;
+        }
+        dfs(res, num, "", target, 0, 0, 0);
+        return res;
+    }
+
+    public void dfs(List<String> res, String num, String cur, int target, int curSum, int mul, int pos) {
+        if (pos == num.length() && curSum == target) {
+            res.add(cur);
+            return;
+        }
+        for (int i = pos; i < num.length(); i++) {
+            if (i != pos && num.charAt(pos) == '0') {
+                break;
+            } else {
+                Integer segment = Integer.parseInt(num.substring(pos, i + 1));
+                if (pos == 0) {
+                    dfs(res, num, String.valueOf(segment), target, segment, segment, i + 1);
+                } else {
+                    dfs(res, num, cur + "+" + segment, target, curSum + segment, segment, i + 1);
+                    dfs(res, num, cur + "-" + segment, target, curSum - segment, -segment, i + 1);
+                    dfs(res, num, cur + "*" + segment, target, curSum - mul + mul * segment, mul * segment, i + 1);
+                }
+            }
+        }
     }
 }

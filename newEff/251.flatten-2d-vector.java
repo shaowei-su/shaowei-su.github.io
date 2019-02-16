@@ -57,17 +57,21 @@ class Vector2D {
     public Vector2D(int[][] v) {
        i = 0;
        j = 0;
-       v = v;
+       this.v = v;
+       move();
+    }
+
+    public void move() {
+        while (i < v.length && v[i].length == j) {
+            i++;
+            j = 0;
+        }
     }
     
     public int next() {
        int val = v[i][j];
-       if (j < v[i].length - 1) {
-           j++;
-       } else {
-           i++;
-           j = 0;
-       }
+       j++;
+       move();
        return val;
     }
     
