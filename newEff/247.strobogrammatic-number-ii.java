@@ -25,11 +25,23 @@
  * 
  */
 class Solution {
+
+    Map<Character, Character> ccMap = new HashMap<>();
     public List<String> findStrobogrammatic(int n) {
         List<String> res = new ArrayList<>();
         if (n < 1) {
             return res;
         }
+        if (n == 1) {
+            return Arrays.asList("0", "1", "8");
+        }
+
+        ccMap.put('6', '9');
+        ccMap.put('9', '6');
+        ccMap.put('0', '0');
+        ccMap.put('1', '1');
+        ccMap.put('8', '8');
+
         dfs(res, "", n);
         return res;
 
@@ -44,14 +56,30 @@ class Solution {
             return;
         }
         if ((n % 2 == 0) && (cur.length() * 2 == n)) {
-            res.add(expand(cur));
+            res.add(expand(cur, n));
             return;
         } else if ((n % 2== 1) && (cur.length() * 2 == n + 1)) {
-            res.add(expand(cur));
+            res.add(expand(cur, n));
             return;
         }
         
-        if (cur.length()
+        char[] targets = cur.length() < n / 2 ? arr1 : arr2;
+        for (char c : targets) {
+            if (cur.length() == 0 && c == '0') {
+                continue;
+            }
+            dfs(res, cur + c, n);
+        }
+    }
+
+    public String expand(String cur, int n) {
+        StringBuilder sb = new StringBuilder(cur);
+        int pos = n % 2 == 0 ? cur.length() - 1 : cur.length() - 2;
+        while (pos >= 0) {
+            sb.append(ccMap.get(cur.charAt(pos--)));
+        }
+        return sb.toString();
+    }
 
 
 

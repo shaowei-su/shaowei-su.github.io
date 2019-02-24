@@ -1,4 +1,3 @@
-import java.util.*;
 /*
  * @lc app=leetcode id=179 lang=java
  *
@@ -37,6 +36,7 @@ class Solution {
         if (nums == null || nums.length == 0) {
             return "";
         }
+        /**
         PriorityQueue<String> pq = new PriorityQueue<String>((a, b) -> {
             if (a.length() > b.length() && a.startsWith(b)) {
                 if (a.charAt(b.length()) > b.charAt(0)) {
@@ -54,19 +54,18 @@ class Solution {
                 return b.compareTo(a);
             }
         });
+        */
+        PriorityQueue<String> pq = new PriorityQueue<>((a, b) -> (b + a).compareTo(a + b));
         StringBuilder sb = new StringBuilder();
         for (int  i : nums) {
             pq.offer(String.valueOf(i));
         }
+        if (pq.peek().equals("0")) {
+            return "0";
+        }
         while (pq.size() > 0) {
-            System.out.println("now poll : " + pq.peek());
             sb.append(pq.poll());
         }
         return sb.toString();
-    }
-
-    public static void main(String[] args) {
-        Solution sol = new Solution();
-        sol.largestNumber(new int[] {3,30,34,5,9});
     }
 }
