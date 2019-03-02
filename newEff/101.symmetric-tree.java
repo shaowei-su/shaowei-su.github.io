@@ -48,7 +48,31 @@
  * }
  */
 class Solution {
-    public boolean isSymmetric4(TreeNode root) {
+
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        return next(root.left, root.right);
+    }
+
+    public boolean next(TreeNode left, TreeNode right) {
+        if (left == null && right == null) {
+            return true;
+        }
+        if (left == null || right == null) {
+            return false;
+        }
+        if (left.val != right.val) {
+            return false;
+        }
+        return next(left.left, right.right) && next(left.right, right.left);
+    }
+
+
+
+
+    public boolean isSymmetric5(TreeNode root) {
         return root == null || helper(root.left, root.right);
     }
     public boolean helper(TreeNode left, TreeNode right) {
@@ -60,7 +84,7 @@ class Solution {
         }
         return helper(left.left, right.right) && helper(left.right, right.left);
     }
-    public boolean isSymmetric(TreeNode root) {
+    public boolean isSymmetric6(TreeNode root) {
         if (root == null) return true;
         Deque<TreeNode> stack = new LinkedList<>();
         if (root.left != null) {
