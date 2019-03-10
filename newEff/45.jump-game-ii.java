@@ -32,6 +32,41 @@
  */
 class Solution {
     public int jump(int[] nums) {
-        
+
+    int n = nums.length, step = 0, start = 0, end = 0;
+    while (end < n - 1) {
+        step++;
+        int maxend = end + 1;
+        for (int i = start; i <= end; i++) {
+            if (i + nums[i] >= n - 1) {
+                return step;
+            }
+            maxend = Math.max(maxend, i + nums[i]);
+        }
+        start = end + 1;
+        end = maxend;
+    }
+    
+    return step;
+
+
+
+    }
+    public int jump2(int[] nums) {
+        if (nums == null || nums.length < 0) {
+            return 0;
+        }
+        int len = nums.length;
+        int[] dp = new int[len];
+        dp[0] = 0;
+        for (int i = 1; i < len; i++) {
+            dp[i] = Integer.MAX_VALUE;
+            for (int j = 0; j < i; j++) {
+               if (nums[j] >= (i - j)) {
+                   dp[i] = Math.min(dp[i], dp[j] + 1);
+               }
+            }
+        }
+        return dp[len - 1];
     }
 }

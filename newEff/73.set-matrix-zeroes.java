@@ -58,6 +58,84 @@
  */
 class Solution {
     public void setZeroes(int[][] matrix) {
-        
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return;
+        }
+        int row = matrix.length;
+        int col = matrix[0].length;
+        boolean fr = false;
+        boolean fc = false;
+        for (int i = 0; i <  row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (matrix[i][j] == 0) {
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                    if (i == 0) fr = true;
+                    if (j == 0) fc = true;
+                }
+            }
+        }
+        for (int i = 1; i < row; i++) {
+            if (matrix[i][0] == 0) {
+                for (int j = 0; j < col; j++) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        for (int j = 1; j < col; j++) {
+            if (matrix[0][j] == 0) {
+                for (int i = 0; i < row; i++) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        if (fr) {
+            for (int j = 0; j < col; j++) {
+                matrix[0][j] = 0;
+            }
+        }
+        if (fc) {
+            for (int i = 0; i < row; i++) {
+                matrix[i][0]= 0;
+            }
+        }
+
+
     }
+    public void setZeroes2(int[][] matrix) {
+       if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+           return;
+       }
+       int row = matrix.length;
+       int col = matrix[0].length;
+       for (int i = 0; i <  row; i++) {
+           for (int j = 0; j < col; j++) {
+               if (matrix[i][j] == 0) {
+                   expand(matrix, i, j, row, col);
+               }
+           }
+       }
+       for (int i = 0; i < row; i++) {
+           for (int j = 0; j < col; j++) {
+               if (matrix[i][j] == Integer.MIN_VALUE) {
+                   matrix[i][j] = 0;
+               }
+           }
+       }
+       return;
+    }
+
+    public void expand(int[][] matrix, int i, int j, int row, int col) {
+        for (int m = 0; m < row; m++) {
+            if (matrix[m][j] > 0) {
+                matrix[m][j] = Integer.MIN_VALUE;
+            }
+        }
+        for (int n = 0; n < col; n++) {
+            if (matrix[i][n] > 0) {
+                matrix[i][n] = Integer.MIN_VALUE;
+            }
+        }
+    }
+        
 }

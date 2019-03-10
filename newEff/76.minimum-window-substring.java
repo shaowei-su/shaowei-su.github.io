@@ -31,6 +31,49 @@
  */
 class Solution {
     public String minWindow(String s, String t) {
+        if (s.length() < t.length()) {
+            return "";
+        }
+        Map<Character, Integer> charCount = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            charCount.put(c, charCount.getOrDefault(c, 0) + 1);
+        }
+        int left = 0;
+        int right = 0;
+        int leftMin = 0;
+        int minLen = Integer.MAX_VALUE;
+        int targetCount = 0;
+        while (right < s.length()) {
+            char cur = s.charAt(right);
+            if (charCount.containsKey(cur)) {
+                int n = charCount.get(cur) - 1;
+                charCount.put(cur, n);
+                if (n >= 0) {
+                    targetCount++;
+                }
+            }
+            while (targetCount == t.length()) {
+                if (right - left + 1 < minLen) {
+                    minLen = right - left + 1;
+                    leftMin = left;
+                }
+                char curLeft = s.charAt(left);
+                if (charCount.containsKey(curLeft)) {
+                    int n = charCount.get(curLeft) + 1;
+                    if (n > 0) {
+                        targetCount--;
+                    }
+                    charCount.put(curLeft, n);
+                }
+                left++;
+            }
+            right++;
+        }
+        return minLen == Integer.MAX_VALUE ? "" : s.substring(leftMin, leftMin + minLen);
+    }
+
+
+    public String minWindow2(String s, String t) {
         if (s.length() < t.length()) return "";
         Map<Character, Integer> countMap = new HashMap<>();
         for (char c : t.toCharArray()) {

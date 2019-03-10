@@ -42,6 +42,48 @@
  */
 class Solution {
     public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
+         List<Interval> res = new ArrayList<>();
+         if (intervals == null || intervals.size() == 0) {
+             res.add(newInterval);
+             return res;
+         }
+         Interval cur = newInterval;
+         int pos = 0;
+         int lastMerge = -1;
+         while (pos < intervals.size()) {
+             if (pos == 0 && newInterval.end < intervals.get(0).start) {
+                 intervals.add(0, newInterval);
+                 lastMerge = -1;
+                 break;
+             }
+             if (pos == intervals.size() - 1 && newInterval.start > intervals.get(intervals.size() - 1).end) {
+                 intervals.add(newInterval);
+                 lastMerge = -1;
+                 break;
+             }
+             if (pos > 0 && intervals.get(pos - 1).end < newInterval.start && intervals.get(pos).start > newInterval.end) {
+                 intervals.add(pos, newInterval);
+                 lastMerge = -1;
+                 break;
+             }
+             if (isOverlap(intervals.get(pos), newInterval)) {
+                 newInterval = merge(intervals.get(pos), newInterval);
+                 intervals.remove(pos);
+                 lastMerge = pos;
+             } else {
+                 pos++;
+             }
+         }
+         if (lastMerge != -1) {
+             intervals.add(lastMerge, newInterval);
+         }
+         return intervals;
+
+
+
+
+    }
+    public List<Interval> insert2(List<Interval> intervals, Interval newInterval) {
         List<Interval> res = new ArrayList<>();
         if (intervals == null || intervals.size() == 0) {
             res.add(newInterval);
