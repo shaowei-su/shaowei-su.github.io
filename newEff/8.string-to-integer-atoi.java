@@ -82,7 +82,29 @@
  * 
  */
 class Solution {
-    public int myAtoi(String str) {
+     public int myAtoi(String str) {
+         if (str == null || str.length() == 0) return 0;
+         int index = 0;
+         str = str.trim();
+         int res = 0;
+         boolean isNeg = false;
+         for (int i = index; i < str.length(); i++) {
+             if (str.charAt(i) == '-' && i == index) {
+                 isNeg = true;
+                 continue;
+             }
+             if (i == index && str.charAt(i) == '+') continue;
+             if (!Character.isDigit(str.charAt(i))) break;
+             int digit = str.charAt(i) - '0';
+             if (Integer.MAX_VALUE / 10 < res || (Integer.MAX_VALUE / 10 == res && Integer.MAX_VALUE % 10 < digit)) {
+                 return isNeg ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+             }
+             res = res * 10 + Integer.parseInt(String.valueOf(str.charAt(i)));
+         }
+         if (isNeg) res = -1 * res;
+         return res;
+     }
+    public int myAtoi2(String str) {
         if (str == null || str.length() == 0) return 0;
         int index = 0;
         while (index < str.length() && str.charAt(index) == ' ') index++;

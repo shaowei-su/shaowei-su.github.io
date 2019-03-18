@@ -30,6 +30,41 @@
  */
 class Solution {
     public String longestPalindrome(String s) {
+        if (s == null || s.length() == 0) {
+            return "";
+        }
+        int len = s.length();
+        boolean[][] dp = new boolean[len][len];
+        int maxLen = 0;
+        String res = "";
+        for (int i = 0; i < len; i++) {
+            dp[i][i] = true;
+            if (maxLen == 0) {
+                maxLen = 1;
+                res = s.substring(i, i + 1);
+            }
+            if (i > 0 && s.charAt(i) == s.charAt(i - 1)) {
+                dp[i - 1][i] = true;
+                maxLen = Math.max(maxLen, 2);
+                res = s.substring(i - 1, i + 1);
+            }
+        }
+        for (int i = 3; i <= len; i++) {
+            for (int l = 0; l + i <= len; l++) {
+                int r = l + i - 1;
+                if (s.charAt(r) == s.charAt(l) && dp[l + 1][r - 1]) {
+                    dp[l][r] = true;
+                    maxLen = i;
+                    res = s.substring(l, r + 1);
+                }
+            }
+        }
+
+        return res;
+
+
+    }
+    public String longestPalindrome2(String s) {
         if (s == null || s.length() == 0) return "";
         int maxLen = 0, left = 0, right = 0;
         String res = "";
