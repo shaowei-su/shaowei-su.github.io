@@ -49,6 +49,47 @@ class Solution {
         if (s == null || s.length() == 0) {
             return 0;
         }
+        Deque<Integer> stack = new LinkedList<>();
+        int num = 0;
+        int pos = 0;
+        char sign = '+';
+        while (pos < s.length()) {
+            char cur = s.charAt(pos);
+            if (Character.isDigit(cur)) {
+                num = num * 10 + (cur - '0');
+            }
+            if ((!Character.isDigit(cur) && cur != ' ') || pos == s.length() - 1) {
+                if (sign == '+') {
+                    stack.push(num);
+                } else if (sign == '-') {
+                    stack.push(-num);
+                } else if (sign == '*') {
+                    stack.push(stack.pop() * num);
+                } else if (sign == '/') {
+                    stack.push(stack.pop() / num);
+                }
+                sign = cur;
+                num = 0;
+            }
+
+            pos++;
+        }
+        int res = 0;
+        while (!stack.isEmpty()) {
+            res += stack.pop();
+        }
+
+
+        return res;
+
+
+
+
+    }
+    public int calculate2(String s) {
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
         s = s.replaceAll("\\s+", "");
         Deque<String> stack = new LinkedList<>();
         int pos = 0;

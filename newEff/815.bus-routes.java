@@ -1,4 +1,3 @@
-import java.util.*;
 /*
  * @lc app=leetcode id=815 lang=java
  *
@@ -44,6 +43,9 @@ import java.util.*;
  */
 class Solution {
     public int numBusesToDestination(int[][] routes, int S, int T) {
+        if (S == T) {
+            return 0;
+        }
         Set<Integer> transfer = new HashSet<>();
         Map<Integer, Set<Integer>> graphMap = convert(routes, transfer);
         // bfs
@@ -53,12 +55,11 @@ class Solution {
         queue.offer(start);
         Set<Integer> visited = new HashSet<>();
         visited.add(start);
-        int count = 0;
+        int count = 1;
         while (!queue.isEmpty()) {
             int size = queue.size();
             while (size-- > 0) {
                 int cur = queue.poll();
-                System.out.println("now process : " + cur);
                 if (graphMap.get(cur).contains(end)) {
                     return count;
                 }
@@ -78,11 +79,6 @@ class Solution {
 
         return -1;
 
-    }
-
-    public static void main(String[] args) {
-        Solution sol = new Solution();
-        sol.numBusesToDestination(new int[][] {{1, 2, 7}, {3, 6, 7}}, 1, 6);
     }
 
     public Map<Integer, Set<Integer>> convert(int[][] routes, Set<Integer> transfer) {

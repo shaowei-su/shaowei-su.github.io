@@ -44,34 +44,29 @@ class Solution {
             sum += num;
             max = Math.max(max, num);
         }
-        if (max > sum / k) {
+        if (sum % k != 0) {
             return false;
         }
         int cap = sum / k;
-        int[] volumes = new int[k];
-        Arrays.sort(nums);
-        for (int i = nums.length - 1; i >= 0; i--) {
-            boolean fitIn = false;
-            for (int j = 0; j < k; j++) {
-                if (volumes[j] + nums[i] <= cap) {
-                    volumes[j] += nums[i];
-                    fitIn = true;
-                    break;
+        return dfs(nums, 0, k, 0, new boolean[nums.length], cap);
+    }
+
+    public boolean dfs(int[] nums, int startInd, int k, int curSum, boolean[] visited, int capacity) {
+        if (k == 1) {
+            return true;
+        }
+        if (curSum == capacity) {
+            return dfs(nums, 0, k - 1, 0, visited, capacity);
+        }
+        for (int i = startInd; i < nums.length; i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                if (dfs(nums, i + 1, k, curSum + nums[i], visited, capacity)) {
+                    return true;
                 }
-            }
-            if (!fitIn) {
-                return false;
+                visited[i] = false;
             }
         }
-        for (int j = 0; j < k; j++) {
-            if (volumes[j] != cap) {
-                return false;
-            }
-        }
-
-
-        return true;
-
-            
+        return false;
     }
 }

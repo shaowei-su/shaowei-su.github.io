@@ -46,6 +46,49 @@ import java.util.*;
  */
 class Solution {
     public int calculate(String s) {
+
+    Deque<Integer> stack = new LinkedList<>();
+    int sign = 1;
+    int num = 0;
+    int res = 0;
+    int pos = 0;
+    while (pos < s.length()) {
+        char cur = s.charAt(pos);
+        if (Character.isDigit(cur)) {
+            num = num * 10 + (cur - '0');
+        } else if (cur == '+') {
+            res += sign * num;
+            sign = 1;
+            num = 0;
+        } else if (cur == '-') {
+            res += sign * num;
+            sign = -1;
+            num = 0;
+        } else if (cur == '(') {
+            stack.push(res);
+            stack.push(sign);
+            sign = 1;
+            num = 0;
+            res = 0;
+        } else if (cur == ')') {
+            res += sign * num;
+            num = 0;
+            res *= stack.pop();
+            res += stack.pop();
+        }
+        pos++;
+    }
+    if (num != 0) {
+        res += sign * num;
+    }
+
+    return res;
+    }
+
+
+
+
+    public int calculate2(String s) {
         if (s == null || s.length() == 0) {
             return 0;
         }
