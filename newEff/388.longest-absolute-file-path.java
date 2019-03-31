@@ -1,4 +1,3 @@
-import java.util.*;
 /*
  * @lc app=leetcode id=388 lang=java
  *
@@ -65,23 +64,20 @@ import java.util.*;
  * another path aaaaaaaaaaaaaaaaaaaaa/sth.png.
  */
 class Solution {
-    public static void main(String[] args) {
-        Solution sol = new Solution();
-        //sol.lengthLongestPath("dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext");
-        sol.lengthLongestPath("dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext");
-    }
     public int lengthLongestPath(String input) {
         if (input == null || input.length() == 0) {
             return 0;
         }
         String[] files = input.split("\\n");
         Map<Integer, String> levelMap = new HashMap<>();
-        int maxLen = -1;
+        int maxLen = 0;
         for (String file : files) {
             int level = countLevel(file);
             levelMap.put(level, file.substring(level, file.length()));
-            System.out.println("levelMap = " + levelMap);
-            int curLen = 0;
+            if (!file.contains(".")) {
+                continue;
+            }
+            int curLen = level;
             for (int i = 0; i <= level; i++) {
                 curLen += levelMap.get(i).length();
             }
@@ -91,7 +87,7 @@ class Solution {
     }
     public int countLevel(String file) {
         int i = 0;
-        while (i < file.length() - 1) {
+        while (i < file.length()) {
             if (file.charAt(i) == '\t') {
                 i++;
             } else {
