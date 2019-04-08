@@ -39,6 +39,23 @@
  */
 class Solution {
     public int[] plusOne(int[] digits) {
+        int len = digits.length;
+        int[] res = new int[len + 1];
+        int carry = 1;
+        int iter = len - 1;
+        while (iter >= 0) {
+            int tmp = carry + digits[iter];
+            carry = tmp / 10;
+            res[iter + 1] = tmp % 10;
+            iter--;
+        }
+        if (carry > 0) {
+            res[0] = 1;
+        }
+        return res[0] == 1 ? res : Arrays.copyOfRange(res, 1, len + 1);
+
+    }
+    public int[] plusOne2(int[] digits) {
         if (digits == null || digits.length == 0) {
             return null;
         }

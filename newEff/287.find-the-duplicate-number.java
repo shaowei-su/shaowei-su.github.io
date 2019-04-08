@@ -41,6 +41,19 @@
  */
 class Solution {
     public int findDuplicate(int[] nums) {
+        int res = 0;
+        int len = nums.length;
+        for (int i = 1; i < len; i++) {
+            res = res ^ i;
+        }
+        for (int num : nums) {
+            res = res ^ num;
+        }
+
+        return res;
+
+    }
+    public int findDuplicate3(int[] nums) {
         int left = 1;
         int right = nums.length - 1;
         while (left + 1 < right) {

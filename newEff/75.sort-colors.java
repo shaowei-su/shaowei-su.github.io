@@ -40,6 +40,31 @@
  */
 class Solution {
     public void sortColors(int[] nums) {
+        int len = nums.length;
+        int left = 0;
+        int right = len - 1;
+        int iter = 0;
+        while (iter <= right) {
+            if (nums[iter] == 0 && iter > left) {
+                swap(nums, left, iter);
+                left++;
+                iter--;
+            } else if (nums[iter] == 2) {
+                swap(nums, right, iter);
+                right--;
+                iter--;
+            }
+            iter++;
+        }
+
+    }
+
+
+
+
+
+
+    public void sortColors2(int[] nums) {
         if (nums == null || nums.length == 0) {
             return;
         }

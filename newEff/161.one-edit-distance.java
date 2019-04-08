@@ -49,6 +49,32 @@
  */
 class Solution {
     public boolean isOneEditDistance(String s, String t) {
+        if (s == null || t == null) {
+            return false;
+        }
+        if (Math.abs(s.length() - t.length()) > 1) {
+            return false;
+        }
+        int si = 0;
+        int ti = 0;
+        while (si < s.length() && ti < t.length()) {
+            if (s.charAt(si) == t.charAt(ti)) {
+                si++;
+                ti++;
+            } else {
+                if (s.length() == t.length()) {
+                    return s.substring(si + 1).equals(t.substring(ti + 1));
+                } else if (s.length() > t.length()) {
+                    return s.substring(si + 1).equals(t.substring(ti));
+                } else {
+                    return s.substring(si).equals(t.substring(ti + 1));
+                }
+            }
+        }
+        return Math.abs(s.length() - t.length()) == 1;
+
+    }
+    public boolean isOneEditDistance2(String s, String t) {
         return isOneEditDistanceHelper(s, t, true); 
     }
     public boolean isOneEditDistanceHelper(String s, String t, boolean first) {

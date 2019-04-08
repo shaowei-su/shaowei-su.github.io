@@ -35,6 +35,54 @@ class Solution {
     public boolean exist(char[][] board, String word) {
         int n = board.length;
         int m = board[0].length;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                boolean[][] visited = new boolean[n][m];
+                visited[i][j] = true;
+                if (board[i][j] == word.charAt(0) && dfs2(board, i, j, n, m, word, new StringBuilder().append(board[i][j]), visited)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    public boolean dfs2(char[][] board, int i, int j, int n, int m, String word, StringBuilder sb, boolean[][] visited) {
+        if (sb.toString().equals(word)) {
+            return true;
+        }
+        if (sb.length() >= word.length()) {
+            return false;
+        }
+        if (!word.startsWith(sb.toString())) {
+            return false;
+        }
+        for (int[] dir : dirs) {
+            int x = i + dir[0];
+            int y = j + dir[1];
+            if (x < 0 || x >= n || y < 0 || y >= m) {
+                continue;
+            }
+            if (visited[x][y]) {
+                continue;
+            }
+            visited[x][y] = true;
+            sb.append(board[x][y]);
+            if (dfs2(board, x, y, n, m, word, sb, visited)) {
+                return true;
+            }
+            sb.setLength(sb.length() - 1);
+            visited[x][y] = false;
+        }
+
+        return false;
+    }
+ 
+    public boolean exist2(char[][] board, String word) {
+        int n = board.length;
+        int m = board[0].length;
         char[] targets = word.toCharArray();
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {

@@ -31,6 +31,49 @@
  */
 class Solution {
     public String minWindow(String s, String t) {
+        Map<Character, Integer> targetCount = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            targetCount.put(c, targetCount.getOrDefault(c, 0) + 1);
+        }
+        int metCount = 0;
+        int left = 0, right = 0;
+        int minLen = Integer.MAX_VALUE;
+        String res = "";
+        while (right < s.length()) {
+            char curChar = s.charAt(right);
+            if (targetCount.containsKey(curChar)) {
+                int n = targetCount.get(curChar) - 1;
+                if (n >= 0) {
+                    metCount++;
+                }
+                targetCount.put(curChar, n);
+            }
+            while (metCount == t.length()) {
+                if (right - left + 1 < minLen) {
+                    minLen = right - left + 1;
+                    res = s.substring(left, right + 1);
+                }
+                char leftChar = s.charAt(left);
+                if (targetCount.containsKey(leftChar)) {
+                    int n = targetCount.get(leftChar) + 1;
+                    if (n > 0) {
+                        metCount--;
+                    }
+                    targetCount.put(leftChar, n);
+                }
+                left++;
+            }
+            right++;
+        }
+
+
+        return res;
+
+
+
+
+    }
+    public String minWindow3(String s, String t) {
         if (s.length() < t.length()) {
             return "";
         }

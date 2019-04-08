@@ -42,6 +42,32 @@ class Solution {
         if (heights == null || heights.length == 0) {
             return 0;
         }
+        Deque<Integer> stack = new LinkedList<>();
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < heights.length; i++) {
+            if (stack.isEmpty() || heights[stack.peek()] < heights[i]) {
+                stack.push(i);
+            } else {
+                Integer lastInd = stack.pop();
+                max = Math.max(max, (stack.isEmpty() ? i : i - stack.peek() - 1) * heights[lastInd]);
+                i--;
+            }
+        }
+
+        while (!stack.isEmpty()) {
+            Integer lastInd = stack.pop();
+            max = Math.max(max, (stack.isEmpty() ? heights.length : heights.length - stack.peek() - 1) * heights[lastInd]);
+        }
+
+
+        return max;
+
+
+    }
+    public int largestRectangleArea2(int[] heights) {
+        if (heights == null || heights.length == 0) {
+            return 0;
+        }
 
         Deque<Integer> stack = new LinkedList<>();
 

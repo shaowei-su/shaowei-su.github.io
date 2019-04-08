@@ -1,103 +1,120 @@
-import java.util.*;
 /*
- * @lc app=leetcode id=388 lang=java
+ * [79] Word Search
  *
- * [388] Longest Absolute File Path
- *
- * https://leetcode.com/problems/longest-absolute-file-path/description/
+ * https://leetcode.com/problems/word-search/description/
  *
  * algorithms
- * Medium (38.93%)
- * Total Accepted:    61.6K
- * Total Submissions: 158.1K
- * Testcase Example:  '"dir\\n\\tsubdir1\\n\\tsubdir2\\n\\t\\tfile.ext"'
+ * Medium (29.06%)
+ * Total Accepted:    213.9K
+ * Total Submissions: 735.1K
+ * Testcase Example:  '[["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]]\n"ABCCED"'
  *
- * Suppose we abstract our file system by a string in the following manner:
+ * Given a 2D board and a word, find if the word exists in the grid.
  * 
- * The string "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext" represents:
+ * The word can be constructed from letters of sequentially adjacent cell,
+ * where "adjacent" cells are those horizontally or vertically neighboring. The
+ * same letter cell may not be used more than once.
  * 
- * dir
- * ⁠   subdir1
- * ⁠   subdir2
- * ⁠       file.ext
- * 
- * 
- * The directory dir contains an empty sub-directory subdir1 and a
- * sub-directory subdir2 containing a file file.ext.
- * 
- * The string
- * "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
- * represents:
- * 
- * dir
- * ⁠   subdir1
- * ⁠       file1.ext
- * ⁠       subsubdir1
- * ⁠   subdir2
- * ⁠       subsubdir2
- * ⁠           file2.ext
+ * Example:
  * 
  * 
- * The directory dir contains two sub-directories subdir1 and subdir2. subdir1
- * contains a file file1.ext and an empty second-level sub-directory
- * subsubdir1. subdir2 contains a second-level sub-directory subsubdir2
- * containing a file file2.ext.
+ * board =
+ * [
+ * ⁠ ['A','B','C','E'],
+ * ⁠ ['S','F','C','S'],
+ * ⁠ ['A','D','E','E']
+ * ]
  * 
- * We are interested in finding the longest (number of characters) absolute
- * path to a file within our file system. For example, in the second example
- * above, the longest absolute path is "dir/subdir2/subsubdir2/file2.ext", and
- * its length is 32 (not including the double quotes).
- * 
- * Given a string representing the file system in the above format, return the
- * length of the longest absolute path to file in the abstracted file system.
- * If there is no file in the system, return 0.
- * 
- * Note:
- * 
- * The name of a file contains at least a . and an extension.
- * The name of a directory or sub-directory will not contain a ..
+ * Given word = "ABCCED", return true.
+ * Given word = "SEE", return true.
+ * Given word = "ABCB", return false.
  * 
  * 
- * 
- * Time complexity required: O(n) where n is the size of the input string.
- * 
- * Notice that a/aa/aaa/file1.txt is not the longest file path, if there is
- * another path aaaaaaaaaaaaaaaaaaaaa/sth.png.
  */
 class Solution {
+
     public static void main(String[] args) {
         Solution sol = new Solution();
-        //sol.lengthLongestPath("dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext");
-        sol.lengthLongestPath("dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext");
+        //sol.exist(new char[][] {{'A','B','C','E'},{'S','F','C','S'},{'A','D','E','E'}}, "ABCCED");
+        sol.exist(new char[][] {{'a', 'a'}}, "aaa");
     }
-    public int lengthLongestPath(String input) {
-        if (input == null || input.length() == 0) {
-            return 0;
-        }
-        String[] files = input.split("\\n");
-        Map<Integer, String> levelMap = new HashMap<>();
-        int maxLen = -1;
-        for (String file : files) {
-            int level = countLevel(file);
-            levelMap.put(level, file.substring(level, file.length()));
-            System.out.println("levelMap = " + levelMap);
-            int curLen = 0;
-            for (int i = 0; i <= level; i++) {
-                curLen += levelMap.get(i).length();
-            }
-            maxLen = Math.max(maxLen, curLen);
-        }
-        return maxLen;
-    }
-    public int countLevel(String file) {
-        int i = 0;
-        while (i < file.length() - 1) {
-            if (file.charAt(i) == '\t') {
-                i++;
-            } else {
-                return i;
+
+    public boolean exist(char[][] board, String word) {
+        int n = board.length;
+        int m = board[0].length;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                boolean[][] visited = new boolean[n][m];
+                visited[i][j] = true;
+                if (board[i][j] == word.charAt(0) && dfs2(board, i, j, n, m, word, new StringBuilder().append(board[i][j]), visited)) {
+                    return true;
+                }
             }
         }
-        return i;
+        return false;
     }
+
+    int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    public boolean dfs2(char[][] board, int i, int j, int n, int m, String word, StringBuilder sb, boolean[][] visited) {
+        System.out.println(" i = " + i + " j = " + j + " sb = " + sb.toString());
+        if (sb.toString().equals(word)) {
+            return true;
+        }
+        if (sb.length() >= word.length()) {
+            return false;
+        }
+        for (int[] dir : dirs) {
+            int x = i + dir[0];
+            int y = j + dir[1];
+            if (x < 0 || x >= n || y < 0 || y >= m) {
+                continue;
+            }
+            if (visited[x][y]) {
+                continue;
+            }
+            visited[x][y] = true;
+            sb.append(board[x][y]);
+            if (dfs2(board, x, y, n, m, word, sb, visited)) {
+                return true;
+            }
+            sb.setLength(sb.length() - 1);
+            visited[x][y] = false;
+        }
+
+        return false;
+    }
+ 
+    public boolean exist2(char[][] board, String word) {
+        int n = board.length;
+        int m = board[0].length;
+        char[] targets = word.toCharArray();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                boolean[][] visited = new boolean[n][m];
+                if (board[i][j] == targets[0] && dfs(visited, board, targets, i, j, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean dfs(boolean[][] visited, char[][] board, char[] targets, int i, int j, int cur) {
+        int n = board.length;
+        int m = board[0].length;
+        if (i < 0 || i >= n) return false;
+        if (j < 0 || j >= m) return false;
+        if (visited[i][j]) return false;
+        if (board[i][j] != targets[cur]) return false;
+        if (cur == (targets.length - 1) && targets[cur] == board[i][j]) {
+            return true;
+        }
+        visited[i][j] = true;
+        if (dfs(visited, board, targets, i + 1, j, cur + 1) || dfs(visited, board, targets, i - 1, j, cur + 1) || dfs(visited, board, targets, i, j + 1, cur + 1) || dfs(visited, board, targets, i, j - 1, cur + 1)) {
+            return true;
+        }
+        visited[i][j] = false;
+        return false;
+    }
+
 }

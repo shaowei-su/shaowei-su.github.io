@@ -48,6 +48,27 @@
  */
 class Solution {
     public int[] intersect(int[] nums1, int[] nums2) {
-        
+        Map<Integer, Integer> num1Count = new HashMap<>();
+        Map<Integer, Integer> num2Count = new HashMap<>();
+        for (int num : nums1) {
+            num1Count.put(num, num1Count.getOrDefault(num, 0) + 1);
+        }
+        for (int num : nums2) {
+            num2Count.put(num, num2Count.getOrDefault(num, 0) + 1);
+        }
+        ArrayList<Integer> res = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : num1Count.entrySet()) {
+            if (num2Count.containsKey(entry.getKey())) {
+                int count = Math.min(entry.getValue(), num2Count.get(entry.getKey()));
+                while (count-- > 0) {
+                    res.add(entry.getKey());
+                }
+            }
+        }
+        int[] resArr = new int[res.size()];
+        for (int i = 0; i < resArr.length; i++) {
+            resArr[i] = res.get(i);
+        }
+        return resArr;
     }
 }

@@ -30,6 +30,48 @@
  * 
  */
 class Solution {
+    Map<String, Boolean> cache = new HashMap<>();
+    public boolean isInterleave2(String s1, String s2, String s3) {
+        if (s1 == null || s1.length() == 0) {
+            return s2.equals(s3);
+        }
+        if (s2 == null || s2.length() == 0) {
+            return s1.equals(s3);
+        }
+        if (s3.length() != s1.length() + s2.length()) {
+            return false;
+        }
+        if (s3.length() == 0) {
+            return false;
+        }
+        if (cache.containsKey(s1 + "_" + s2 + "_" + s3)) {
+            return cache.get(s1 + "_" + s2 + "_" + s3);
+        }
+        int i1 = 0, i2 = 0, i3 = 0;
+        while (i1 < s1.length() && i2 < s2.length()) {
+            char c1 = s1.charAt(i1);
+            char c2 = s2.charAt(i2);
+            char c3 = s3.charAt(i1 + i2);
+            if (c1 == c3 && c2 == c3) {
+                return isInterleave(s1.substring(i1 + 1), s2.substring(i2), s3.substring(i1 + i2 + 1)) || isInterleave(s1.substring(i1), s2.substring(i2 + 1), s3.substring(i1 + i2 + 1));
+            } else if (c1 == c3) {
+                i1++;
+            } else if (c2 == c3) {
+                i2++;
+            } else {
+                cache.put(s1 + "_" + s2 + "_" + s3, false);
+                return false;
+            }
+        }
+        if (i1 < s1.length()) {
+            return s1.substring(i1).equals(s3.substring(i1 + i2));
+        }
+        if (i2 < s2.length()) {
+            return s2.substring(i2).equals(s3.substring(i1 + i2));
+        }
+        cache.put(s1 + "_" + s2 + "_" + s3, true);
+        return true;
+    }
     public boolean isInterleave(String s1, String s2, String s3) {
         if (s1 == null || s2 == null || s3 == null) {
             return false;
