@@ -41,6 +41,36 @@
 class Solution {
 
     public int firstMissingPositive(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return 1;
+        }
+        int len = nums.length;
+        int iter = 0;
+        while (iter < len) {
+            if (nums[iter] < 1 || nums[iter] > len || nums[iter] == iter + 1 || nums[nums[iter] - 1] == nums[iter]) {
+                iter++;
+            } else {
+                int pos = nums[iter] - 1;
+                int tmp = nums[pos];
+                nums[pos] = nums[iter];
+                nums[iter] = tmp;
+            }
+        }
+        for (int i = 1; i <= len; i++) {
+            if (nums[i - 1] != i) {
+                return i;
+            }
+        }
+
+        return len + 1;
+
+
+
+
+
+    }
+
+    public int firstMissingPositive3(int[] nums) {
         if (nums == null || nums.length == 0) return 1;
         for (int i = 0; i < nums.length; i++) {
             if (nums[i] > nums.length || nums[i] < 1) {

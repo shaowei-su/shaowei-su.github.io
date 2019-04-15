@@ -61,6 +61,37 @@
  */
 class Solution {
     public int removeDuplicates(int[] nums) {
+
+        int right = 0, left = 0;
+        while (right < nums.length) {
+            if (right > 0 && nums[right] == nums[right - 1]) {
+                right++;
+                continue;
+            }
+            nums[left++] = nums[right++];
+        }
+        return left;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+    public int removeDuplicates2(int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;
         }

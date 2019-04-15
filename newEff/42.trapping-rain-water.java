@@ -28,6 +28,24 @@
  */
 class Solution {
     public int trap(int[] height) {
+        Deque<Integer> stack = new LinkedList<>();
+        int res = 0;
+        int iter = 0;
+        while (iter < height.length) {
+            if (stack.isEmpty() || height[iter] <= height[stack.peek()]) {
+                stack.push(iter);
+                iter++;
+            } else {
+                Integer lastLow = stack.pop();
+                if (!stack.isEmpty()) {
+                    res += (Math.min(height[iter], height[stack.peek()]) - height[lastLow]) * (iter - stack.peek() - 1);
+                }
+            }
+        }
+        return res;
+    }
+
+    public int trap3(int[] height) {
 
         Deque<Integer> stack = new LinkedList<>();
         int res = 0;

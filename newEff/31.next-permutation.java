@@ -27,6 +27,36 @@
  */
 class Solution {
     public void nextPermutation(int[] nums) {
+        if (nums == null || nums.length == 0) {
+            return ;
+        }
+        int lastInc = -1;
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] < nums[i + 1]) {
+                lastInc = i;
+            }
+        }
+        if (lastInc == -1) {
+            Arrays.sort(nums);
+            return;
+        }
+        int smallestAfter = nums[lastInc + 1], smallestAfterInd = lastInc + 1;
+        for (int i = smallestAfterInd + 1; i < nums.length; i++) {
+            if (nums[i] <= smallestAfter && nums[i] > nums[lastInc]) {
+                smallestAfter = nums[i];
+                smallestAfterInd = i;
+            }
+        }
+        swap(nums, lastInc, smallestAfterInd);
+        reverse(nums, lastInc + 1, nums.length - 1);
+        return;
+
+
+
+
+
+    }
+    public void nextPermutation2(int[] nums) {
         if (nums == null || nums.length <= 1) return;
 
         int firstDec = -1;

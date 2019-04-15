@@ -41,6 +41,43 @@
  */
 class Solution {
     public String multiply(String num1, String num2) {
+        char[] arr1 = new StringBuilder().append(num1).reverse().toString().toCharArray();
+        char[] arr2 = new StringBuilder().append(num2).reverse().toString().toCharArray();
+        int len1 = arr1.length;
+        int len2 = arr2.length;
+        int[] res = new int[len1 + len2];
+        for (int i = 0; i < len1; i++) {
+            for (int j = 0; j < len2; j++) {
+                int val = (arr1[i] - '0') * (arr2[j] - '0');
+                res[i + j] += val % 10;
+                res[i + j + 1] += val / 10;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        boolean started = false;
+        int carry = 0;
+        for (int i = 0; i < len1 + len2; i++) {
+            int val = res[i] + carry;
+            sb.append(val % 10);
+            carry = val / 10;
+        }
+        int zeroCount = 0;
+        for (int i = len1 + len2 - 1; i >= 0; i--) {
+            if (sb.charAt(i) == '0') {
+                zeroCount++;
+            } else {
+                break;
+            }
+        }
+        if (zeroCount == len1 + len2) {
+            return "0";
+        }
+        return sb.reverse().toString().substring(zeroCount);
+
+    }
+
+
+    public String multiply2(String num1, String num2) {
         int len1 = num1.length();
         int len2 = num2.length();
         int[] res = new int[len1 + len2];

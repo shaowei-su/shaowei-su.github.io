@@ -32,6 +32,42 @@
 class Solution {
     public List<String> generateParenthesis(int n) {
         List<String> res = new ArrayList<>();
+        if (n < 1) {
+            return res;
+        }
+
+        dfs2(res, 0, 0, new StringBuilder(), n);
+
+        return res;
+    }
+
+    public void dfs2(List<String> res, int leftCount, int totalLeftCount, StringBuilder sb, int n) {
+        if (sb.length() == n * 2) {
+            res.add(sb.toString());
+            return;
+        }
+        if (leftCount == 0) {
+            sb.append("(");
+            dfs2(res, 1, totalLeftCount + 1, sb, n);
+            sb.setLength(sb.length() - 1);
+        } else if (totalLeftCount < n) {
+            sb.append("(");
+            dfs2(res, leftCount + 1, totalLeftCount + 1, sb, n);
+            sb.setLength(sb.length() - 1);
+
+            sb.append(")");
+            dfs2(res, leftCount - 1, totalLeftCount, sb, n);
+            sb.setLength(sb.length() - 1);
+        } else {
+            sb.append(")");
+            dfs2(res, leftCount - 1, totalLeftCount, sb, n);
+            sb.setLength(sb.length() - 1);
+        }
+    }
+
+
+    public List<String> generateParenthesis2(int n) {
+        List<String> res = new ArrayList<>();
         if (n <= 0) {
             return res;
         }

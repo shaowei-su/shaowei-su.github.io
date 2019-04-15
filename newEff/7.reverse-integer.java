@@ -42,6 +42,31 @@
 class Solution {
 
     public int reverse(int x) {
+        if (x == 0) {
+            return 0;
+        }
+        boolean isNeg = false;
+        if (x < 0) {
+            isNeg = true;
+            x = -x;
+        }
+        int res = 0;
+        while (x > 0) {
+            int last = x % 10;
+            x = x / 10;
+            int newRes = res * 10 + last;
+            if ((newRes - last) / 10 != res) {
+                return 0;
+            }
+            res = newRes;
+        }
+
+        return isNeg ? -res : res;
+
+
+
+    }
+    public int reverse4(int x) {
         if (x == 0) return 0;
         int res = 0;
         while (x != 0) {

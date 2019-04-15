@@ -46,6 +46,59 @@ import java.util.*;
  */
 class Solution {
     public int calculate(String s) {
+        Deque<Integer> stack = new LinkedList<>();
+        int num = 0;
+        int pos = 0;
+        char sign = '+';
+        while (pos < s.length()) {
+            char cur = s.charAt(pos);
+            if (Character.isDigit(cur)) {
+                num = num * 10 + (cur - '0');
+            }
+            if (cur == '(') {
+                int close = findClose(s, pos + 1);
+                num = calculate(s.substring(pos + 1, close));
+                pos = close;
+            }
+            if ((!Character.isDigit(cur) && cur != ' ' && cur != '(') || pos == s.length() - 1) {
+
+                if (sign == '+') {
+                    stack.push(num);
+                } else if (sign == '-') {
+                    stack.push(-num);
+                } else if (sign == '*') {
+                    stack.push(stack.pop() * num);
+                } else if (sign == '/') {
+                    stack.push(stack.pop() / num);
+                }
+                sign = cur;
+                num = 0;
+            }
+            pos++;
+        }
+        int res = 0;
+        while (!stack.isEmpty()) {
+            res += stack.pop();
+        }
+        return res;
+    }
+
+    public int findClose(String s, int start) {
+        int count = 1;
+        for (int i = start; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                count++;
+            } else if (s.charAt(i) == ')') {
+                count--;
+            }
+            if (count == 0) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int calculate3(String s) {
 
     Deque<Integer> stack = new LinkedList<>();
     int sign = 1;

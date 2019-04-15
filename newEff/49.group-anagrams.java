@@ -34,6 +34,28 @@
  */
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
+
+        List<List<String>> res = new ArrayList<>();
+        Map<String, List<String>> anaMap = new HashMap<>();
+        for (String str : strs) {
+            String tmp = sort2(str);
+            List<String> tmpList = anaMap.computeIfAbsent(tmp, l -> new ArrayList<>());
+            tmpList.add(str);
+        }
+        for (List<String> tmpList : anaMap.values()) {
+            res.add(tmpList);
+        }
+
+        return res;
+    }
+
+    public String sort2(String str) {
+        char[] arr = str.toCharArray();
+        Arrays.sort(arr);
+        return new String(arr);
+    }
+
+    public List<List<String>> groupAnagrams2(String[] strs) {
         List<List<String>> res = new ArrayList<>();
         if (strs == null || strs.length == 0) {
             return res;
