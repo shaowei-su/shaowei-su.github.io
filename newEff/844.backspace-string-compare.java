@@ -69,6 +69,40 @@
  */
 class Solution {
     public boolean backspaceCompare(String S, String T) {
-        
+        if (S == null || T == null) {
+            return false;
+        }
+        int siter = S.length() - 1;
+        int titer = T.length() - 1;
+        while (siter >= 0 || titer >= 0) {
+            int scount = 0;
+            while (siter >= 0 && (scount > 0 || S.charAt(siter) == '#')) {
+                if (S.charAt(siter) == '#') {
+                    scount++;
+                } else {
+                    scount--;
+                }
+                siter--;
+            }
+            scount = 0;
+            while (titer >= 0 && (scount > 0 || T.charAt(titer) == '#')) {
+                if (T.charAt(titer) == '#') {
+                    scount++;
+                } else {
+                    scount--;
+                }
+                titer--;
+            }
+            if (titer < 0 && siter < 0) {
+                return true;
+            }
+            if (titer < 0 || siter < 0) {
+                return false;
+            }
+            if (T.charAt(titer--) != S.charAt(siter--)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
