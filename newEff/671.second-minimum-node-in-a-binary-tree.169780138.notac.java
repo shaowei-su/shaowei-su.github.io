@@ -14,6 +14,24 @@ class Solution {
     int sedMin = Integer.MAX_VALUE;
     
     public int findSecondMinimumValue(TreeNode root) {
+        if (root.left == null) {
+            return -1;
+        }
+        int left = root.left.val == root.val ? findSecondMinimumValue(root.left) : root.left.val;
+        int right = root.right.val == root.val ? findSecondMinimumValue(root.right) : root.right.val;
+        if (left != -1 && right != -1) {
+            return Math.min(left, right);
+        } else if (left != -1) {
+            return left;
+        } else if (right != -1){
+            return right;
+        } else {
+            return -1;
+        }
+
+
+    }   
+    public int findSecondMinimumValue2(TreeNode root) {
         if (root == null || root.left == null || root.right == null) {
             return -1;
         }

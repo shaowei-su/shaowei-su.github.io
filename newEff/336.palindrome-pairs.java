@@ -37,7 +37,53 @@
  * 
  */
 class Solution {
+
     public List<List<Integer>> palindromePairs(String[] words) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (words == null || words.length < 2) {
+            return res;
+        }
+        Map<String, Integer> smap = new HashMap<>();
+        for (int i = 0; i < words.length; i++) {
+            smap.put(words[i], i);
+        }
+        for (int i = 0; i < words.length; i++) {
+            for (int j = 0; j <= words[i].length(); j++) {
+                String left = words[i].substring(0, j);
+                String right = words[i].substring(j);
+                if (isPan(left)) {
+                    String rev = new StringBuilder().append(right).reverse().toString();
+                    if (smap.containsKey(rev) && smap.get(rev) != i && left.length() > 0) {
+                        List<Integer> tmp = new ArrayList<>(Arrays.asList(smap.get(rev), i));
+                        res.add(tmp);
+                    }
+                }
+                if (isPan(right)) {
+                    String rev = new StringBuilder().append(left).reverse().toString();
+                    if (smap.containsKey(rev) && smap.get(rev) != i) {
+                        List<Integer> tmp = new ArrayList<>(Arrays.asList(i, smap.get(rev)));
+                        res.add(tmp);
+                    }
+                }
+            }
+        }
+
+
+
+        return res;
+
+
+
+    }
+
+
+
+
+
+
+
+
+    public List<List<Integer>> palindromePairs3(String[] words) {
          List<List<Integer>> res = new ArrayList<>();
          if (words == null || words.length == 0) {
              return res;

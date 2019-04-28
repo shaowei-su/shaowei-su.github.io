@@ -44,10 +44,10 @@ class Solution {
             int target = nums[i];
             int left = 0, right = i - 1;
             while (left < right) {
-                if ( < target) {
-                    count++;
+                if (nums[left] + nums[right] <= target) {
                     left++;
                 } else {
+                    count += right - left;
                     right--;
                 }
             }

@@ -67,7 +67,39 @@ class Solution {
         return Integer.parseInt(log.split(":")[2]);
     }
 
+/* WRONG
     public int[] exclusiveTime(int n, List<String> logs) {
+        int[] res = new int[n];
+         if (logs == null || logs.size() == 0) {
+             return res;
+         }
+         Deque<String> stack = new LinkedList<>();
+         stack.push(logs.get(0));
+         int presum = 0;
+         for (int i = 1; i < logs.size(); i++) {
+             String cur = logs.get(i);
+             int curTs = getTime(cur);
+             int curFunc = getFunc(cur);
+             if (cur.contains("start")) {
+                 stack.push(cur);
+             } else {
+                 String top = stack.pop();
+                 int topTs = getTime(top);
+                 int topFunc = getFunc(top);
+                 res[topFunc] += curTs - topTs + 1 - presum;
+                 presum += curTs - topTs + 1;
+             }
+             if (stack.isEmpty()) {
+                 presum = 0;
+             }
+         }
+
+         return res;
+
+
+    }
+*/
+    public int[] exclusiveTime2(int n, List<String> logs) {
         int[] res = new int[n];
         if (logs == null || logs.size() == 0) {
             return res;

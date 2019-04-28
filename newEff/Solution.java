@@ -1,96 +1,161 @@
 import java.util.*;
+
 /*
- * @lc app=leetcode id=943 lang=java
+ * @lc app=leetcode id=336 lang=java
  *
- * [943] Find the Shortest Superstring
+ * [336] Palindrome Pairs
  *
- * https://leetcode.com/problems/find-the-shortest-superstring/description/
+ * https://leetcode.com/problems/palindrome-pairs/description/
  *
  * algorithms
- * Hard (35.79%)
- * Total Accepted:    3.5K
- * Total Submissions: 9.5K
- * Testcase Example:  '["alex","loves","leetcode"]'
+ * Hard (29.33%)
+ * Total Accepted:    59K
+ * Total Submissions: 199.1K
+ * Testcase Example:  '["abcd","dcba","lls","s","sssll"]'
  *
- * Given an array A of strings, find any smallest string that contains each
- * string in A as a substring.
- * 
- * We may assume that no string in A is substring of another string in A.
- * 
- * 
- * 
+ * Given a list of unique words, find all pairs of distinct indices (i, j) in
+ * the given list, so that the concatenation of the two words, i.e. words[i] +
+ * words[j] is a palindrome.
  * 
  * Example 1:
  * 
  * 
- * Input: ["alex","loves","leetcode"]
- * Output: "alexlovesleetcode"
- * Explanation: All permutations of "alex","loves","leetcode" would also be
- * accepted.
+ * 
+ * Input: ["abcd","dcba","lls","s","sssll"]
+ * Output: [[0,1],[1,0],[3,2],[2,4]] 
+ * Explanation: The palindromes are
+ * ["dcbaabcd","abcddcba","slls","llssssll"]
  * 
  * 
  * 
  * Example 2:
  * 
  * 
- * Input: ["catg","ctaagt","gcta","ttca","atgcatc"]
- * Output: "gctaagttcatgcatc"
- * 
- * 
- * 
- * 
- * 
- * Note:
- * 
- * 
- * 1 <= A.length <= 12
- * 1 <= A[i].length <= 20
- * 
- * 
+ * Input: ["bat","tab","cat"]
+ * Output: [[0,1],[1,0]] 
+ * Explanation: The palindromes are ["battab","tabbat"]
  * 
  * 
  * 
  */
 class Solution {
-    String res = null;
-    public String shortestSuperstring(String[] A) {
-        dfs(A, new HashSet<String>(), new StringBuilder());
-        return res;
-    }
 
     public static void main(String[] args) {
         Solution sol = new Solution();
-        String[] A = {"catg","ctaagt","gcta","ttca","atgcatc"};
-        sol.shortestSuperstring(A);
+        String[] arr = new String[] {"a", ""};
+        sol.palindromePairs(arr);
     }
 
-    public void dfs(String[] A, Set<String> visited, StringBuilder sb) {
-        if (visited.size() == A.length) {
-            System.out.println("now sb = " + sb);
-            if (res == null || sb.length() < res.length()) {
-                System.out.println("cur min = " + sb.length());
-                res = sb.toString();
-            }
-            return;
+    public List<List<Integer>> palindromePairs(String[] words) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (words == null || words.length < 2) {
+            return res;
         }
-        for (int i = 0; i < A.length; i++) {
-            if (visited.contains(A[i])) {
-                continue;
-            }
-            visited.add(A[i]);
-            int k = Math.min(A[i].length(), sb.length());
-            while (k > 0) {
-                if (sb.substring(sb.length() - k).equals(A[i].substring(0, k))) {
-                    break;
-                } else {
-                    k--;
+        Map<String, Integer> smap = new HashMap<>();
+        for (int i = 0; i < words.length; i++) {
+            smap.put(words[i], i);
+        }
+        for (int i = 0; i < words.length; i++) {
+            for (int j = 0; j < words[i].length(); j++) {
+                String left = words[i].substring(0, j);
+                String right = words[i].substring(j);
+                if (isPan(left)) {
+                    String rev = new StringBuilder().append(right).reverse().toString();
+                    if (smap.containsKey(rev) && smap.get(rev) != i && rev.length() > 0) {
+                        List<Integer> tmp = new ArrayList<>(Arrays.asList(smap.get(rev), i));
+                        System.out.println("add i = " + i + " tmp = " + tmp);
+                        res.add(tmp);
+                    }
+                }
+                if (isPan(right)) {
+                    String rev = new StringBuilder().append(left).reverse().toString();
+                    if (smap.containsKey(rev) && smap.get(rev) != i) {
+                        List<Integer> tmp = new ArrayList<>(Arrays.asList(i, smap.get(rev)));
+                        System.out.println("add i = " + i + " tmp = " + tmp);
+                        res.add(tmp);
+                    }
                 }
             }
-            String newAi = A[i].substring(k);
-            sb.append(newAi);
-            dfs(A, visited, sb);
-            sb.setLength(sb.length() - newAi.length());
-            visited.remove(A[i]);
         }
+
+
+
+        return res;
+
+
+
+    }
+
+
+
+
+
+
+
+
+    public List<List<Integer>> palindromePairs3(String[] words) {
+         List<List<Integer>> res = new ArrayList<>();
+         if (words == null || words.length == 0) {
+             return res;
+         }
+         Map<String, Integer> strInd = new HashMap<>();
+         for (int i = 0; i < words.length; i++) {
+             strInd.put(words[i], i);
+         }
+         for (int i = 0; i < words.length; i++) {
+             String cur = words[i];
+             for (int j = 0; j <= cur.length(); j++) {
+                 String left = cur.substring(0, j);
+                 String right = cur.substring(j);
+                 if (isPan(left)) {
+                     String rightRev = new StringBuilder(right).reverse().toString();
+                     if (strInd.containsKey(rightRev) && strInd.get(rightRev) != i) {
+                         List<Integer> temp = new ArrayList<>();
+                         temp.add(strInd.get(rightRev));
+                         temp.add(i);
+                         res.add(temp);
+                     }
+                 }
+                 if (isPan(right)) {
+                     String leftRev = new StringBuilder(left).reverse().toString();
+                     if (strInd.containsKey(leftRev) && strInd.get(leftRev) != i && right.length() > 0) {
+                         List<Integer> temp = new ArrayList<>();
+                         temp.add(i);
+                         temp.add(strInd.get(leftRev));
+                         res.add(temp);
+                     }
+                 }
+             }
+         }
+         return res;
+
+    }
+    public List<List<Integer>> palindromePairs2(String[] words) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (words == null || words.length == 0) {
+            return res;
+        }
+        for (int i = 0; i < words.length; i++) {
+            for (int j = 0; j < words.length; j++) {
+                if (i == j) {
+                    continue;
+                }
+                if (isPan(words[i] + words[j])) {
+                    res.add(new ArrayList<Integer>(Arrays.asList(i, j)));
+                }
+            }
+        }
+        return res;
+    }
+    public boolean isPan(String s) {
+        int l = 0, r = s.length() - 1;
+        while (l < r) {
+            if (s.charAt(l) != s.charAt(r)) {
+                return false;
+            }
+            l++;
+            r--;
+        }
+        return true;
     }
 }

@@ -65,6 +65,22 @@
  */
 class Solution {
     public char nextGreatestLetter(char[] letters, char target) {
-        
+        int left = 0;
+        int right = letters.length - 1;
+        while (left + 1 < right) {
+            int mid = left + (right - left) / 2;
+            if (letters[mid] <= target) {
+                left = mid;
+            } else {
+                right = mid;
+            }
+        }
+        if (target < letters[left]) {
+            return letters[left];
+        } else if (target < letters[right]) {
+            return letters[right];
+        } else {
+            return letters[(right + 1) % letters.length];
+        }
     }
 }
