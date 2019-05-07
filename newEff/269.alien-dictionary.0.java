@@ -75,46 +75,40 @@ class Solution {
     public String alienOrder(String[] words) {
         Map<Character, Set<Character>> graph = new HashMap<>();
         Map<Character, Integer> indegree = new HashMap<>();
-        List<Character> cands = new ArrayList<>();
-        Set<Character> added = new HashSet<>();
+
         for (String word : words) {
-            if (word.length() == 0) {
-                continue;
-            }
-            for (int i = 0; i < word.length() - 1; i++) {
-                Set<Character> tmp = graph.computeIfAbsent(word.charAt(i), s -> new HashSet<>());
-                for (int j = i + 1; j < word.length(); j++) {
-                    if (word.charAt(i) == word.charAt(j)) {
-                        continue;
-                    }
-                    tmp.add(word.charAt(j));
-                }
-            }
-            if (!added.contains(word.charAt(0))) { 
-                cands.add(word.charAt(0));
-                added.add(word.charAt(0));
+            for (char c : word.toCharArray()) {
+                indegree.put(c, 0);
             }
         }
+
         for (int i = 0; i < words.length - 1; i++) {
-            Set<Character> tmp = graph.computeIfAbsent(words[i].charAt(0), s -> new HashSet<>());
-            for (int j = i + 1; j < words.length; j++) {
-                if (words[i].charAt(0) == words[j].charAt(0)) {
+            String w1 = words[i];
+            String w2 = words[i + 1];
+            int len = Math.min(w1.length(), w2.length());
+            int k = 0;
+            while (k < len) {
+                if (w1.charAt(k) == w2.charAt(k)) {
+                    k++;
                     continue;
                 }
-                tmp.add(words[j].charAt(0));
+                Set<Character> tmp = graph.computeIfAbsent(w1.charAt(k), s -> new HashSet<>());
+                if (!tmp.contains(w2.charAt(k))) {
+                    tmp.add(w2.charAt(k));
+                    indegree.put(w2.charAt(k), indegree.get(w2.charAt(k)) + 1);
+                }
+                break;
             }
         }
-        System.out.println("graph = " + graph);
-        for (Character k : graph.keySet()) {
-            for (Character v : graph.get(k)) {
-                indegree.put(v, indegree.getOrDefault(v, 0) + 1);
+
+        Deque<Character> queue = new LinkedList<>();
+
+        for (Character c : indegree.keySet()) {
+            if (indegree.get(c) == 0) {
+                queue.offer(c);
             }
         }
-        System.out.println("indegree = "  +indegree);
-        for (Character k : indegree.keySet()) {
-            cands.remove(k);
-        }
-        Deque<Character> queue = new LinkedList<>(cands);
+
         StringBuilder sb = new StringBuilder();
         while (!queue.isEmpty()) {
             Character cur = queue.poll();
@@ -128,6 +122,10 @@ class Solution {
                     queue.offer(next);
                 }
             }
+        }
+
+        if (sb.length() != indegree.size()) {
+            return "";
         }
 
         return sb.toString();

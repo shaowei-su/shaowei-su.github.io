@@ -58,20 +58,27 @@
  * 
  */
 class Solution {
-    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
-        int[][] dp = new int[K + 2][n];
+    public int findCheapestPrice3(int n, int[][] flights, int src, int dst, int K) {
+        int[][] dp = new int[K + 1][n];
         for (int[] d : dp) {
             Arrays.fill(d, Integer.MAX_VALUE);
         }
+        for (int[] f : flights) {
+            if (f[0] == src) {
+                dp[0][f[1]] = f[2];
+            }
+        }
         dp[0][src] = 0;
-        for (int i = 1; i < K + 2; i++) {
+        for (int i = 1; i <= K; i++) {
             dp[i][src] = 0;
             for (int[] f : flights) {
-                dp[i][f[1]] = Math.min(dp[i][f[1]], dp[i - 1][f[0]] + f[2]);
+                if (dp[i - 1][f[0]] != Integer.MAX_VALUE) {
+                    dp[i][f[1]] = Math.min(dp[i][f[1]], dp[i - 1][f[0]] + f[2]);
+                }
             }
         }
 
-        return dp[K + 1][dst] == Integer.MAX_VALUE ? -1 : dp[K + 1][dst];
+        return dp[K][dst] == Integer.MAX_VALUE ? -1 : dp[K][dst];
 
 
     }
@@ -108,6 +115,28 @@ class Solution {
         }
         return curMin == Integer.MAX_VALUE ? -1 : curMin;
     }
+
+     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
+         Map<Integer, List<int[]>> graph = new HashMap<>();
+         convert(graph, flights);
+         PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+         pq.offer(new int[]{src, 0, 0}); //node, cost, steps
+         while (!pq.isEmpty()) {
+            int[] cur = pq.poll();
+            if (cur[0] == dst) {
+                return cur[1];
+            }
+            if (!graph.containsKey(cur[0])) {
+                continue;
+            }
+            if (cur[2] <= K) {
+                for (int[] neighbor : graph.get(cur[0])) {
+                    pq.offer(new int[] {neighbor[0], cur[1] + neighbor[1], cur[2] + 1});
+                }
+            }
+         }
+         return -1;
+     }
 
     public void convert(Map<Integer, List<int[]>> graph, int[][] flights) {
         for (int[] f : flights) {

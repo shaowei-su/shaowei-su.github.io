@@ -75,13 +75,11 @@ class Solution {
            int rightMin = heights[K];
            int leftIter = K - 1, rightIter = K + 1;
            int leftMinPos = K, rightMinPos = K;
-           boolean leftLower = false, rightLower = false;
            while (leftIter >= 0) {
                if (heights[leftIter] > heights[leftIter + 1]) {
                    break;
                }
                if (heights[leftIter] < leftMin) {
-                   leftLower = true;
                    leftMin = heights[leftIter];
                    leftMinPos = leftIter;
                }
@@ -92,7 +90,6 @@ class Solution {
                    break;
                }
                if (heights[rightIter] < rightMin) {
-                   rightLower = true;
                    rightMin = heights[rightIter];
                    rightMinPos =rightIter;
                }

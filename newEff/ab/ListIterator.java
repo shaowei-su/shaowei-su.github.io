@@ -25,6 +25,7 @@ public class ListIterator {
     }
 
     public void remove2() {
+        // here, needs to make sure colIter is not null
         while (colIter == null && rowIter.hasNext()) {
             colIter = rowIter.next().iterator();
         }

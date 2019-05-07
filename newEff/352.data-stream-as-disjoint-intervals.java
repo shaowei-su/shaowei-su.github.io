@@ -38,10 +38,10 @@
  * }
  */
 class SummaryRanges {
-    TreeMap<Integer, Interval> indMap;
+    Map<Integer, Interval> indMap;
     /** Initialize your data structure here. */
     public SummaryRanges() {
-        indMap = new TreeMap<Integer, Interval>();
+        indMap = new HashMap<Integer, Interval>();
     }
     
     public void addNum(int val) {
@@ -92,6 +92,7 @@ class SummaryRanges {
             resSet.add(inter);
             res.add(inter);
         }
+        Collections.sort(res, (a, b) -> a.start - b.start);
         return res;
     }
 }

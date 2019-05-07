@@ -81,9 +81,47 @@ class Solution {
             return schedule.get(index);
         }
     }
-    public List<Interval> employeeFreeTime(List<List<Interval>> schedule) {
-        List<Interval> mergeRes = new ArrayList<>();
 
+
+    public List<Interval> employeeFreeTime(List<List<Interval>> schedule) {
+        List<Interval> res = new ArrayList<>();
+        List<int[]> points = new ArrayList<>();
+        for (List<Interval> li : schedule) {
+            for (Interval inter : li) {
+                points.add(new int[] {0, inter.start});
+                points.add(new int[] {1, inter.end});
+            }
+        }
+        Collections.sort(points, (a, b) -> a[1] - b[1]);
+
+        int count = 0;
+        int validStart = -1;
+        for (int i = 0; i < points.size(); i++) {
+            if (points.get(i)[0] == 0) {
+                count++;
+                if (validStart != -1 && count == 1) {
+                    res.add(new Interval(validStart, points.get(i)[1]));
+                    validStart = -1;
+                }
+            } else {
+                count--;
+                if (count == 0 && i < points.size() - 1) {
+                    validStart = points.get(i)[1];
+                }
+            }
+        }
+
+
+        return res;
+
+
+
+
+    }
+
+
+    public List<Interval> employeeFreeTime2(List<List<Interval>> schedule) {
+        List<Interval> mergeRes = new ArrayList<>();
         PriorityQueue<IndexedInterval> pq = new PriorityQueue<>((a, b) -> {
             if (a.peek().start == b.peek().start) {
                 return a.peek().end - b.peek().end;
