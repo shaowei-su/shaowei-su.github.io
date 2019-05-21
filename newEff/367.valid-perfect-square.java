@@ -38,11 +38,11 @@ class Solution {
         if (num < 0) {
             return false;
         }
-        if (num == 0) {
+        if (num < 2) {
             return true;
         }
         long left = 0;
-        long right = num;
+        long right = num / 2;
         while (left + 1 < right) {
             long mid = left + (right - left) / 2;
             long sqr = mid * mid;

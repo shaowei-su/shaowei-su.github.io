@@ -48,12 +48,23 @@ class Solution {
             smap.put(words[i], i);
         }
         for (int i = 0; i < words.length; i++) {
-            for (int j = 0; j <= words[i].length(); j++) {
+            if (words[i].equals("")) {
+                for (int j = 0; j < words.length; j++) {
+                    if (i == j) {
+                        continue;
+                    }
+                    if (isPan(words[j])) {
+                        res.add(Arrays.asList(i, j));
+                    }
+                }
+                continue;
+            }
+            for (int j = 0; j < words[i].length(); j++) {
                 String left = words[i].substring(0, j);
                 String right = words[i].substring(j);
                 if (isPan(left)) {
                     String rev = new StringBuilder().append(right).reverse().toString();
-                    if (smap.containsKey(rev) && smap.get(rev) != i && left.length() > 0) {
+                    if (smap.containsKey(rev) && smap.get(rev) != i) {
                         List<Integer> tmp = new ArrayList<>(Arrays.asList(smap.get(rev), i));
                         res.add(tmp);
                     }

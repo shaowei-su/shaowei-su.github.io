@@ -21,7 +21,7 @@ public class CWiggleSort {
 
     public static void main(String[] args) {
         CWiggleSort sol = new CWiggleSort();
-        int[] nums = {100,1,100,1,100,1};
+        int[] nums = {1,2, 3, 4, 5, 6};
         sol.sort(nums);
         for (int i : nums) {
             System.out.print(i + " ");

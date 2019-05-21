@@ -33,6 +33,34 @@
  * 
  */
 class Solution {
+    Map<Integer, Integer> cache = new HashMap<>();
+    public int coinChange2(int[] coins, int amount) {
+
+        return dfs(coins, amount);
+    }
+
+    public int dfs(int[] coins, int amount) {
+        if (amount == 0) {
+            return 0;
+        }
+        if (amount < 0) {
+            return -1;
+        }
+        if (cache.containsKey(amount)) {
+            return cache.get(amount);
+        }
+        int min = Integer.MAX_VALUE;
+        for (int coin : coins) {
+            int res = dfs(coins, amount - coin);
+            if (res >= 0 && res < min) {
+                min = res + 1;
+            }
+        }
+        min = min == Integer.MAX_VALUE ? -1 : min;
+        cache.put(amount, min);
+        return min;
+    }
+
     public int coinChange(int[] coins, int amount) {
         if (amount < 0) {
             return -1;
@@ -45,8 +73,8 @@ class Solution {
             dp[i] = -1;
         }
         dp[0] = 0;
-        for (int i = 1; i <= amount; i++) {
-            for (int coin : coins) {
+        for (int coin : coins) {
+            for (int i = 1; i <= amount; i++) {
                 if (i - coin >= 0 && dp[i - coin] >= 0) {
                     if (dp[i] < 0) {
                         dp[i] = dp[i - coin] + 1;

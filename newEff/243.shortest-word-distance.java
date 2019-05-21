@@ -32,6 +32,26 @@
  */
 class Solution {
     public int shortestDistance(String[] words, String word1, String word2) {
+        Map<String, Integer> lastMap = new HashMap<>();
+        int res = Integer.MAX_VALUE;
+        for (int i = 0; i < words.length; i++) {
+            if (words[i].equals(word1)) {
+                if (lastMap.containsKey(word2)) {
+                    res = Math.min(res, i - lastMap.get(word2));
+                }
+                lastMap.put(word1, i);
+            } else if (words[i].equals(word2)) {
+                if (lastMap.containsKey(word1)) {
+                    res = Math.min(res, i - lastMap.get(word1));
+                }
+                lastMap.put(word2, i);
+            }
+        }
+        return res;
+
+    }
+
+    public int shortestDistance2(String[] words, String word1, String word2) {
         if (words == null || words.length == 0) {
             return 0;
         }

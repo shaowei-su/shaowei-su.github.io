@@ -53,25 +53,52 @@
  * 
  */
 class RandomizedCollection {
-
+    Map<Integer, List<Integer>> posMap;
+    List<Integer> valList;
+    Random rand = new Random();
     /** Initialize your data structure here. */
     public RandomizedCollection() {
-        
+        posMap = new HashMap<>();
+        valList = new ArrayList<>();
     }
     
     /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
     public boolean insert(int val) {
-        
+        if (posMap.containsKey(val)) {
+            return false;
+        }
+        List<Integer> pos = posMap.computeIfAbsent(val, l -> new ArrayList<>());
+        pos.add(valList.size());
+        valList.add(val);
+        return true;
     }
     
     /** Removes a value from the collection. Returns true if the collection contained the specified element. */
     public boolean remove(int val) {
+        if (!posMap.containsKey(val)) {
+            return false;
+        }
+        Iterator<Integer> iter = posMap.get(val).iterator();
+        int pos = iter.next();
+        iter.remove();
+        if (pos < valList.size() - 1) {
+            int lastVal = valList.get(valList.size() - 1);
+            List<Integer> lastPos = posMap.get(lastVal);
+            lastPos.remove(lastPos.size() - 1);
+            lastPos.add(pos);
+            valList.set(pos, lastVal);
+        }
+        valList.remove(valList.size() - 1);
+        if (posMap.get(val).isEmpty()) {
+            posMap.remove(val);
+        }
+        return true;
         
     }
     
     /** Get a random element from the collection. */
     public int getRandom() {
-        
+        return valList.get(rand.nextInt(valList.size())); 
     }
 }
 

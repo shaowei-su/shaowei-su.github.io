@@ -58,7 +58,7 @@
  * 
  */
 class Solution {
-    public int findCheapestPrice3(int n, int[][] flights, int src, int dst, int K) {
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
         int[][] dp = new int[K + 1][n];
         for (int[] d : dp) {
             Arrays.fill(d, Integer.MAX_VALUE);
@@ -77,8 +77,11 @@ class Solution {
                 }
             }
         }
-
-        return dp[K][dst] == Integer.MAX_VALUE ? -1 : dp[K][dst];
+        int res = Integer.MAX_VALUE;
+        for (int i = 0; i <= K; i++) {
+            res = Math.min(res, dp[i][dst]);
+        }
+        return res == Integer.MAX_VALUE ? -1 : res;
 
 
     }
@@ -116,7 +119,7 @@ class Solution {
         return curMin == Integer.MAX_VALUE ? -1 : curMin;
     }
 
-     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
+     public int findCheapestPrice3(int n, int[][] flights, int src, int dst, int K) {
          Map<Integer, List<int[]>> graph = new HashMap<>();
          convert(graph, flights);
          PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);

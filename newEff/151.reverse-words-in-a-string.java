@@ -32,7 +32,7 @@
  * 
  */
 public class Solution {
-    public String reverseWords(String s) {
+    public String reverseWords2(String s) {
         if (s == null || s.length() == 0) {
             return "";
         }
@@ -44,5 +44,37 @@ public class Solution {
         }
         sb.setLength(sb.length() - 1);
         return sb.toString();
+    }
+
+    public String reverseWords(String s) {
+        String shat = s.trim();
+        char[] arr = shat.toCharArray();
+        int start = 0;
+        for (int i = 0; i < arr.length; i++) {
+           if (arr[i] == ' ') {
+               if (i > 0 && arr[i - 1] == ' ') {
+                   start = i + 1;
+                   continue;
+               }
+               reverse(arr, start, i - 1);
+               start = i + 1;
+           }
+        }
+        if (start < shat.length() - 1) {
+            reverse(arr, start, shat.length() - 1);
+        }
+        reverse(arr, 0, shat.length() - 1);
+        return new String(arr);
+    }
+
+    public void reverse(char[] arr, int s, int e) {
+        while (s < e) {
+            char tmp = arr[s];
+            arr[s] = arr[e];
+            arr[e] = tmp;
+            s++;
+            e--;
+        }
+        return;
     }
 }

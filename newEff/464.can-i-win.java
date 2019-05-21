@@ -49,6 +49,35 @@
  */
 class Solution {
     public boolean canIWin(int maxChoosableInteger, int desiredTotal) {
-        
+        if (maxChoosableInteger > desiredTotal) {
+            return true;
+        }
+        if ((maxChoosableInteger + 1) / 2 * maxChoosableInteger < desiredTotal) {
+            return false;
+        }
+        char[] visited = new char[maxChoosableInteger];
+        Arrays.fill(visited, '0');
+        return dfs(visited, maxChoosableInteger, desiredTotal, new HashMap<>());
     }
+
+    public boolean dfs(char[] visited, int max, int dsr, Map<String, Boolean> cache) {
+        String state = new String(visited);
+        if (cache.containsKey(state)) {
+            return cache.get(state);
+        }
+        for (int i = 0; i < max; i++) {
+            if ('0' == visited[i]) {
+                visited[i] = '1';
+                if (dsr <= i + 1 || !dfs(visited, max, dsr - i - 1, cache)) {
+                    cache.put(state, true);
+                    visited[i] = '0';
+                    return true;
+                }
+                visited[i] = '0';
+            }
+        }
+        cache.put(state, false);
+        return false;
+    }
+                    
 }

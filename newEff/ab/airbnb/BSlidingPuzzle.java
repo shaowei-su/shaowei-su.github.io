@@ -32,10 +32,10 @@ public class BSlidingPuzzle {
         int[][] matrix = {{2,0,3},
                 {1,4,5},
                 {7,8,6}};
-        Puzzle puzzle = new Puzzle(matrix);
+        NPuzzle puzzle = new NPuzzle(matrix);
         System.out.println(puzzle.canSolve());
         for (int i = 0; i < 20; i++) {
-            puzzle = new Puzzle();
+            puzzle = new NPuzzle(matrix);
             System.out.println(puzzle.canSolve());
         }
     }
@@ -218,6 +218,7 @@ class NPuzzle {
         visited.add(start);
         while (!queue.isEmpty()) {
             String curr = queue.poll();
+            System.out.println("now process :" + curr);
             if (curr.equals(target)) {
                 this.pathRes = getPath(prev, start, target);
                 return true;

@@ -70,6 +70,32 @@
  */
 class Solution {
     public int[] pourWater(int[] heights, int V, int K) {
+        while (V-- > 0) {
+            int index = K;
+            while (index - 1 >= 0 && heights[index - 1] <= heights[index]) {
+                index--;
+            }
+            int leftMost = index;
+            if (heights[leftMost] < heights[K] && leftMost != 0) {
+                heights[leftMost]++;
+                continue;
+            }
+            index = K;
+            while (index + 1 < heights.length && heights[index + 1] <= heights[index]) {
+                index++;
+            }
+            int rightMost = index;
+            if (heights[rightMost] < heights[K] && rightMost != heights.length - 1) {
+                heights[rightMost]++;
+                continue;
+            }
+            heights[K]++;
+        }
+        
+        return Arrays.copyOfRange(heights, 0, heights.length);
+
+    }
+    public int[] pourWater2(int[] heights, int V, int K) {
        while (V > 0) {
            int leftMin = heights[K];
            int rightMin = heights[K];

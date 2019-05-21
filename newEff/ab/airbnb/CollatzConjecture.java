@@ -20,7 +20,7 @@ public class CollatzConjecture {
 
     public static void main(String[] args) {
         CollatzConjecture sol = new CollatzConjecture();
-        System.out.println(sol.findMax(1000000));
+        System.out.println(sol.findMax(7));
     }
 
     public int findMax(int n) {

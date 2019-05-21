@@ -53,10 +53,10 @@ class Solution {
           int len = nums.length;
           boolean[] dp = new boolean[sum / 2 + 1];
           dp[0] = true;
-          for (int i = 1; i <= len; i++) {
+          for (int i = 0; i < len; i++) {
               for (int j = sum / 2; j >= 0; j--) {
-                  if (j - nums[i - 1] >= 0) {
-                      dp[j] = dp[j] || dp[j - nums[i - 1]];
+                  if (j - nums[i] >= 0) {
+                      dp[j] = dp[j] || dp[j - nums[i]];
                   }
               }
           }
